@@ -2,5 +2,5 @@
 require('angular');
 
 var slayer = angular.module('slayer', ['angularFileUpload','ui.tree']);
-slayer.controller('GetFilesController', require('./controllers/get-files.js'));
+slayer.controller('SlayerController', require('./controllers/slayer.js'));
 slayer.filter('layersHTML', require('./filters/layers-html.js'));

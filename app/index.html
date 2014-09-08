@@ -8,7 +8,7 @@
 </head>
 
 <body
-data-ng-controller="GetFilesController"
+data-ng-controller="SlayerController"
 data-nv-file-drop=""
 data-uploader="uploader"
 data-nv-file-over="">
@@ -20,13 +20,10 @@ data-nv-file-over="">
 			<div class="col-md-8 col-sm-6" data-ng-show="layers.list.length">
 				<div >
 					<div class="checkbox">
-						<label><input type="checkbox" data-ng-model="layers.is3d" /> Show layers in 3d</label>
-					</div>
-					<div class="checkbox">
-						<label><input type="checkbox" data-ng-model="layers.hasCodePreview" /> Preview code</label>
+						<label><input type="checkbox" data-ng-model="layers.opts.is3d" /> Show layers in 3d</label>
 					</div>
 
-					<div class="Slayer-preview center-block" data-ng-class="{'Slayer-preview--3d': layers.is3d, 'Slayer-preview--selected': layers.haveSelected}" style="width: {{ layers.width }}px; height: {{ layers.height }}px">
+					<div class="Slayer-preview center-block" data-ng-class="{'Slayer-preview--3d': layers.opts.is3d, 'Slayer-preview--selected': layers.haveSelected}" style="width: {{ layers.opts.output.useTrimmedCanvas?layers.trimmed.width:layers.width }}px; height: {{ layers.opts.output.useTrimmedCanvas?layers.trimmed.height:layers.height }}px">
 						<div
 						data-ng-repeat="layer in layers.list"
 						data-ng-class="{'Slayer-preview-layer--selected': layer.isSelected}"
@@ -37,13 +34,44 @@ data-nv-file-over="">
 							data-ng-src="{{layer.trimmedImg.src}}"
 							data-ng-class="{'Slayer-preview-image--selected': layer.isSelected}"
 							class="Slayer-preview-image"
-							style="top: {{ layer.coordinates.y }}px; left: {{ layer.coordinates.x }}px"
+							style="top: {{ layer.coordinates.get('y') }}px; left: {{ layer.coordinates.get('x') }}px"
 							alt=""
 							>
 						</div>
 					</div>
 
-					<textarea class="form-control" data-ng-show="layers.hasCodePreview" rows="10">{{ layers | layersHTML }}</textarea>
+					<div class="checkbox" data-ng-hide="layers.opts.output.showOptions">
+						<label><input type="checkbox" data-ng-model="layers.opts.output.showOptions" /> Show output options</label>
+					</div>
+					<div class="bs-callout bs-callout-info" data-ng-show="layers.opts.output.showOptions">
+						<h3><label><input type="checkbox" data-ng-model="layers.opts.output.showOptions" /> Output options</label></h3>
+
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="layers.opts.output.useTrimmedCanvas" /> Use trimmed canvas</label>
+						</div>
+						<p>Identification:
+							<span class="radio-inline">
+								<label>
+									<input type="radio" data-ng-model="layers.opts.output.attribute" value="id"> ID
+								</label>
+							</span>
+							<span class="radio-inline">
+								<label>
+									<input type="radio" data-ng-model="layers.opts.output.attribute" value="class"> Class
+								</label>
+							</span>
+							<span class="radio-inline">
+								<label>
+									<input type="radio" data-ng-model="layers.opts.output.attribute" value=""> None
+								</label>
+							</span>
+						</p>
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="layers.opts.output.previewCode" /> Preview code</label>
+						</div>
+					</div>
+
+					<textarea class="form-control" data-ng-show="layers.opts.output.previewCode" rows="10">{{ layers | layersHTML }}</textarea>
 				</div>
 			</div>
 			<div class="col-md-4 col-sm-6" data-ng-class="{'center-block': !layers.list.length}">

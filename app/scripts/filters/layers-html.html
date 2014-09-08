@@ -1,0 +1,5 @@
+<div style="position: relative; width: <%- width %>px; height: <%- height %>px;"><%
+	_.forEach(list, function(layer) { %>
+	<img style="position: absolute; top: <%- layer.coordinates.get('y') %>px; left: <%- layer.coordinates.get('x') %>px;" <%= opts.output.attribute?opts.output.attribute + '="' + layer.name + '" ':"" %>src="<%- layer.file.name %>" alt="" /><%
+}); %>
+</div>

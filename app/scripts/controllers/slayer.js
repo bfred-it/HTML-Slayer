@@ -13,9 +13,16 @@ module.exports = ['$scope', '$filter', 'FileUploader', function($scope, $filter,
 
 	var layers = $scope.layers = {};
 	layers.opts = {};
+
 	layers.opts.thumbnail = {};
 	layers.opts.thumbnail.size = 30;
 	layers.opts.thumbnail.type = 1;
+
+	layers.opts.output = {};
+	layers.opts.output.attribute = 'id';
+	layers.opts.output.useTrimmedCanvas = true;
+	layers.opts.output.previewCode = true;
+	layers.opts.output.showOptions = true;
 
 	layers.list = [];
 	layers.Item = function (file, img) {
@@ -28,6 +35,14 @@ module.exports = ['$scope', '$filter', 'FileUploader', function($scope, $filter,
 
 		layer.img = img;
 		var c = layer.coordinates = canvasUtils.getTrimmedImageCoordinates(img);
+		layer.coordinates.get = function (coordinateName) {
+			var coordinateVal = layer.coordinates[coordinateName];
+			if (layers.opts.output.useTrimmedCanvas) {
+				return coordinateVal - layers.trimmed.a[coordinateName];
+			}
+			return coordinateVal;
+		};
+
 		layer.trimmedImg = new Image();
 		layer.trimmedImg.src = canvasUtils.cropImageAndGetSrc(img, -c.x, -c.y, c.width, c.height);
 		// console.image(layer.trimmedImg.src);
@@ -71,6 +86,57 @@ module.exports = ['$scope', '$filter', 'FileUploader', function($scope, $filter,
 	};
 	layers.width = null;
 	layers.height = null;
+	layers.trimmed = {};
+	layers.updateTrimmedCoordinates = function () {
+		var a = {
+			x: layers.width,
+			y: layers.height
+		};
+		var b = {
+			x: 0,
+			y: 0
+		};
+		var layerCoordinates;
+		for (var i = 0; i < layers.list.length; i++) {
+			layerCoordinates = layers.list[i].coordinates;
+			if (layerCoordinates.a.x < a.x) {
+				a.x = layerCoordinates.a.x;
+			}
+			if (layerCoordinates.a.y < a.y) {
+				a.y = layerCoordinates.a.y;
+			}
+			if (layerCoordinates.b.x > b.x) {
+				b.x = layerCoordinates.b.x;
+			}
+			if (layerCoordinates.b.y > b.y) {
+				b.y = layerCoordinates.b.y;
+			}
+		}
+		layers.trimmed = {
+			a: a,
+			b: b,
+			y: a.y,
+			x: a.x,
+			width: b.x - a.x + 1,
+			height: b.y - a.y + 1
+		};
+	};
+	layers.getTrimmedHeight = function () {
+		var minX = layers.width;
+		var maxX = 0;
+		var layerCoordinates;
+		for (var i = 0; i < layers.list.length; i++) {
+			layerCoordinates = layers.list[i].coordinates;
+			if (layerCoordinates.a.x < minX) {
+				minX = layerCoordinates.a.x;
+			}
+			if (layerCoordinates.b.x > minX) {
+				maxX = layerCoordinates.b.x;
+			}
+		}
+		return maxX - minX;
+
+	};
 	layers.verifySize = function (file) {
 		var image = this;
 		if (!layers.canvasWidth) {
@@ -91,6 +157,8 @@ module.exports = ['$scope', '$filter', 'FileUploader', function($scope, $filter,
 		fileItem.remove();
 	};
 
+	$scope.$watchCollection('layers.list', layers.updateTrimmedCoordinates);
+
 
 	// DRAGGED FILES MANAGER
 	var uploader = $scope.uploader = new FileUploader();
@@ -103,39 +171,11 @@ module.exports = ['$scope', '$filter', 'FileUploader', function($scope, $filter,
 	});
 	uploader.onAfterAddingFile = layers.loadLayer;
 
-	uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-		console.info('onWhenAddingFileFailed', item, filter, options);
+	var userIsInformed = false;
+	uploader.onWhenAddingFileFailed = function() {
+		if (!userIsInformed) {
+			alert('Slayer uses transparent pixels to trim images, use PNG images only');
+			userIsInformed = true;
+		}
 	};
-	// uploader.onAfterAddingFile = function(fileItem) {
-	// 	console.info('onAfterAddingFile', fileItem);
-	// };
-	uploader.onAfterAddingAll = function(addedFileItems) {
-		console.info('onAfterAddingAll', addedFileItems);
-	};
-	uploader.onBeforeUploadItem = function(item) {
-		console.info('onBeforeUploadItem', item);
-	};
-	uploader.onProgressItem = function(fileItem, progress) {
-		console.info('onProgressItem', fileItem, progress);
-	};
-	uploader.onProgressAll = function(progress) {
-		console.info('onProgressAll', progress);
-	};
-	uploader.onSuccessItem = function(fileItem, response, status, headers) {
-		console.info('onSuccessItem', fileItem, response, status, headers);
-	};
-	uploader.onErrorItem = function(fileItem, response, status, headers) {
-		console.info('onErrorItem', fileItem, response, status, headers);
-	};
-	uploader.onCancelItem = function(fileItem, response, status, headers) {
-		console.info('onCancelItem', fileItem, response, status, headers);
-	};
-	uploader.onCompleteItem = function(fileItem, response, status, headers) {
-		console.info('onCompleteItem', fileItem, response, status, headers);
-	};
-	uploader.onCompleteAll = function() {
-		console.info('onCompleteAll');
-	};
-
-	console.info('uploader', uploader);
 }];

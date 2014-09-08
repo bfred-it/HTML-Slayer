@@ -52,5 +52,8 @@
   },
   "browserify-shim": {
     "lodash": "global:lodash"
+  },
+  "dependencies": {
+    "stringify": "^2.2.0"
   }
 }

@@ -8,6 +8,7 @@ var $ = require('gulp-load-plugins')();
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var browserify = require('browserify');
+var stringify = require('stringify');
 
 var log = require('./gulpfile.logging.js');
 
@@ -71,6 +72,7 @@ function buildAndWatchScripts (lr) {
 	bundler.add('./app/scripts/bfred.js');
 	bundler.transform('debowerify');
 	bundler.transform('deglobalify');
+	bundler.transform(stringify(['.html']));
 	if (lr) {
 		bundler.on('update', function () { buildScript(bundler).pipe(lr()); });
 		return buildScript(bundler);
