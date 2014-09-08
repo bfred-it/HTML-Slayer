@@ -1,5 +1,5 @@
-<div style="position: relative; width: <%- width %>px; height: <%- height %>px;"><%
+<div <%= opts.output.attribute&&opts.output.namespace?opts.output.attribute + '="' + opts.output.namespace.replace(/[-_]+$/,'') + '" ':"" %>style="position: relative; width: <%- width %>px; height: <%- height %>px;"><%
 	_.forEach(list, function(layer) { %>
-	<img style="position: absolute; top: <%- layer.coordinates.get('y') %>px; left: <%- layer.coordinates.get('x') %>px;" <%= opts.output.attribute?opts.output.attribute + '="' + layer.name + '" ':"" %>src="<%- layer.file.name %>" alt="" /><%
+	<img <%= opts.output.attribute?opts.output.attribute + '="' + (opts.output.namespace?opts.output.namespace:'')+layer.name + '" ':"" %>style="position: absolute; top: <%- layer.coordinates.get('y') %>px; left: <%- layer.coordinates.get('x') %>px;" src="<%- (opts.output.namespace?opts.output.namespace.replace(/[-_]+$/,'').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()+'/':'') +layer.file.name %>" alt="" /><%
 }); %>
 </div>

@@ -66,11 +66,19 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 	};
 	layers.save = function () {
 		var zip = new JSZip();
+		var folder = zip;
+		var namespace = layers.opts.output.namespace;
+		var zipName = 'HTML layers.zip';
+		if (namespace) {
+			namespace = namespace.replace(/[-_]+$/,'').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+			folder = zip.folder(namespace);
+			zipName = namespace + '.layers.zip';
+		}
 
 		//save layers
 		_.forEach(layers.list, function (layer) {
-			var base64 = layer.trimmedImg.src.indexOf('base64,');
-			zip.file(layer.file.name, layer.trimmedImg.src.substr(base64+7), {
+			var base64 = layer.trimmedImg.src.split('base64,', 2).pop();
+			folder.file(layer.file.name, base64, {
 				base64: true
 			});
 		});
@@ -78,13 +86,15 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 		zip.file('index.html', $filter('layersHTML')(layers) );
 
 		var content = 'data:application/zip;base64,' + zip.generate();
-		saveAs(content, 'HTML layers.zip');
+		saveAs(content, zipName);
 	};
+	var sortAscending = false;
 	layers.sortByName = function () {
 		layers.list.sort(function(item1, item2) {
 			return item1.file.name < item2.file.name;
 		});
-		$scope.$apply();
+		sortAscending = !sortAscending;
+		// $scope.$apply();
 	};
 	layers.width = null;
 	layers.height = null;
