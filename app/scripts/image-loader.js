@@ -41,7 +41,7 @@ function _loadCallback () {
 
 function loadImage(src, userCallback, get) {
 	if (get && loaded[src]) {
-		setTimeout(userCallback, 0);
+		setTimeout(userCallback.bind(loaded[src]), 0);
 		return loaded[src];
 	}
 	var image = new Image();

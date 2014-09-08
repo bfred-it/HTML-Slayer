@@ -1,7 +1,6 @@
 @import 'bootstrap-cerulean.min.css';
 @import 'bootstrap.callouts.css';
 @import 'bootstrap.normalise';
-@import 'functions';
 @import '_timing-functions.scss';
 @import 'angular-ui-tree';
 
@@ -66,16 +65,16 @@ html, body { height: 100%; }
 	border: solid 1px rgba(yellowgreen, 0.6);
 }
 @keyframes show-off {
-	0% {
+	5%, 25%, 45%, 65%, 85% {
 		transform: rotateY(-60deg) rotateX(10deg);
 	}
-	100% {
+	15%, 35%, 55%, 75%, 95% {
 		transform: rotateY(60deg) rotateX(10deg);
 	}
 }
 .Slayer-preview--3d {
 	background-color: #eee;
-	animation: show-off 10s $ease-in-out-sine alternate infinite;
+	animation: show-off 50s $ease-in-out-sine infinite;
 	// transition: transform 5s $ease-in-out-sine;
 	// transform: rotateY(-60deg) rotateX(10deg);
 	transform-style: preserve-3d;
