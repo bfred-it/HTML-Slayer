@@ -91,7 +91,10 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 	var sortAscending = false;
 	layers.sortByName = function () {
 		layers.list.sort(function(item1, item2) {
-			return item1.file.name < item2.file.name;
+			if (sortAscending) {
+				return item1.file.name < item2.file.name;
+			}
+			return item1.file.name > item2.file.name;
 		});
 		sortAscending = !sortAscending;
 		// $scope.$apply();
