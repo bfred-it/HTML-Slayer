@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="slayer">
+<head>
+	<meta charset="UTF-8" />
+	<title>HTML Slayer</title>
+	<link rel="stylesheet" href="assets/bfred.css" type="text/css" />
+	<script type="text/javascript" src="assets/bfred.js"></script>
+</head>
+
+<body
+data-ng-controller="GetFilesController"
+data-nv-file-drop=""
+data-uploader="uploader"
+data-nv-file-over="">
+	<div class="container-fluid">
+		<div class="container center-block">
+			<h2>HTMLSlayer</h2>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-sm-6" data-ng-show="layers.list.length">
+				<div >
+					<div class="checkbox">
+						<label><input type="checkbox" data-ng-model="layers.is3d" /> Show layers in 3d</label>
+					</div>
+					<div class="checkbox">
+						<label><input type="checkbox" data-ng-model="layers.hasCodePreview" /> Preview code</label>
+					</div>
+
+					<div class="Slayer-preview center-block" data-ng-class="{'Slayer-preview--3d': layers.is3d, 'Slayer-preview--selected': layers.haveSelected}" style="width: {{ layers.width }}px; height: {{ layers.height }}px">
+						<div
+						data-ng-repeat="layer in layers.list"
+						data-ng-class="{'Slayer-preview-layer--selected': layer.isSelected}"
+						class="Slayer-preview-layer"
+						>
+							<img
+							src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+							data-ng-src="{{layer.trimmedImg.src}}"
+							data-ng-class="{'Slayer-preview-image--selected': layer.isSelected}"
+							class="Slayer-preview-image"
+							style="top: {{ layer.coordinates.y }}px; left: {{ layer.coordinates.x }}px"
+							alt=""
+							>
+						</div>
+					</div>
+
+					<textarea class="form-control" data-ng-show="layers.hasCodePreview" rows="10">{{ layers | layersHTML }}</textarea>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6" data-ng-class="{'center-block': !layers.list.length}">
+
+				<p data-ng-show="layers.list.length">
+					<button
+					class="btn btn-success"
+					type="button"
+					data-ng-click="layers.save()"
+					>Save HTML, CSS and trimmed images</button>
+				</p>
+
+				<div data-ng-show="layers.list.length">
+					<div class="checkbox" data-ng-hide="layers.opts.thumbnail.showOptions">
+						<label><input type="checkbox" data-ng-model="layers.opts.thumbnail.showOptions" /> Show layers options</label>
+					</div>
+					<div class="bs-callout bs-callout-info" data-ng-show="layers.opts.thumbnail.showOptions">
+						<h3><label><input type="checkbox" data-ng-model="layers.opts.thumbnail.showOptions" /> Layers options</label></h3>
+						<div class="radio">
+							<label>
+								<input type="radio" data-ng-model="layers.opts.thumbnail.type" value="2"> Full thumbnail
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" data-ng-model="layers.opts.thumbnail.type" value="1"> Trimmed thumbnail
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" data-ng-model="layers.opts.thumbnail.type" value="0"> No thumbnail
+							</label>
+						</div>
+
+						<p data-ng-show="layers.opts.thumbnail.type">
+							<label>Thumbnail size:</label> <input type="range" min="30" max="100" step="1" data-ng-model="layers.opts.thumbnail.size" />
+						</p>
+					</div>
+				</div>
+
+
+				<div class="well my-drop-zone" >
+
+					<span data-ng-show="uploader.isHTML5">Drop files here or</span>
+					<label class="btn btn-primary" data-ng-class="{'btn-xs': layers.list.length}" for="input-file" >Browse</label>
+					<input id="input-file" type="file" data-nv-file-select="" data-uploader="uploader" multiple class="hidden" />
+					<button
+					class="btn btn-danger btn-xs"
+					type="button"
+					data-ng-click="layers.clear()"
+					data-ng-show="layers.list.length"
+					>Clear</button>
+					<button
+					class="btn btn-default btn-xs"
+					type="button"
+					data-ng-click="layers.sortByName()"
+					data-ng-show="layers.list.length"
+					>Sort by name</button>
+
+					<br data-ng-show="layers.list.length">
+					<br data-ng-show="layers.list.length">
+					<div data-ui-tree data-max-depth="1">
+						<div data-ui-tree-nodes
+						data-ng-model="layers.list"
+						data-ng-show="layers.list.length">
+							<div data-ui-tree-node
+							data-ng-repeat="layer in layers.list"
+							data-ng-mouseenter="layer.isSelected = true;layers.haveSelected = true"
+							data-ng-mouseleave="layer.isSelected = false;layers.haveSelected = false"
+							class="Slayer-layer"
+							>
+								<div
+								data-ng-show="layers.opts.thumbnail.type"
+								class="Slayer-layer-thumbnail"
+								style="max-width: {{layers.opts.thumbnail.size}}px; max-height: {{layers.opts.thumbnail.size}}px"
+								>
+									<img
+									src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+									data-ng-src="{{ layers.opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
+									alt=""
+									>
+								</div>
+								<button type="button" class="btn btn-danger btn-xs" data-ng-click="layer.remove()">×</button>
+								<!-- <input type="checkbox" data-ng-model="layer.hasWrapper" /> -->
+								{{ layer.name }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <ul>
+		<li>OK Drop files in here</li>
+		<li>OK Verify sizes</li>
+		<li>OK Trim images and save coordinates</li>
+		<li>OK Create list with thumbnails</li>
+		<li>OK Overlap them on main canvas</li>
+		<li>OK Make layers list sortable (z-ordering)</li>
+		<li>OK Create html + css with data</li>
+		<li>OK Save HTML, CSS, images exportable</li>
+		<li>OPTION: inline CSS</li>
+	</ul> -->
+</body>
+</html>
