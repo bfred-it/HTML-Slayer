@@ -1,6 +1,7 @@
 'use strict';
 require('angular-file-upload');
 require('angular-ui-tree');
+require('ngstorage');
 var JSZip = require('jszip');
 var saveAs = require('../save-file');
 var _ = require('lodash');
@@ -8,21 +9,22 @@ var _ = require('lodash');
 var loadImage = require('../image-loader');
 var canvasUtils = require('../canvas-utils');
 
-module.exports = ['$scope', '$filter', 'FileUploader', function($scope, $filter, FileUploader) {
+module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function($scope, $filter, $localStorage, FileUploader) {
 	$scope._ = _;
 
 	var layers = $scope.layers = {};
-	layers.opts = {};
 
-	layers.opts.thumbnail = {};
-	layers.opts.thumbnail.size = 30;
-	layers.opts.thumbnail.type = 1;
+	var opts = {};
+	opts.thumbnail = {};
+	opts.thumbnail.size = 30;
+	opts.thumbnail.type = 1;
 
-	layers.opts.output = {};
-	layers.opts.output.attribute = 'id';
-	layers.opts.output.useTrimmedCanvas = true;
-	layers.opts.output.previewCode = true;
-	layers.opts.output.showOptions = true;
+	opts.output = {};
+	opts.output.attribute = 'id';
+	opts.output.useTrimmedCanvas = true;
+	opts.output.previewCode = true;
+	opts.output.showOptions = true;
+	layers.opts = $localStorage.$default(opts);
 
 	layers.list = [];
 	layers.Item = function (file, img) {
