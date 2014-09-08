@@ -12,7 +12,7 @@ var canvasUtils = require('../canvas-utils');
 module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function($scope, $filter, $localStorage, FileUploader) {
 	$scope._ = _;
 
-	var layers = $scope.layers = {};
+	var layers = $scope.layers = $scope;
 
 	var opts = {};
 	opts.thumbnail = {};
@@ -27,7 +27,7 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 	layers.opts = $localStorage.$default(opts);
 
 	layers.list = [];
-	layers.Item = function (file, img) {
+	var Item = function (file, img) {
 		var layer = this;
 		layer.file = file;
 
@@ -146,7 +146,7 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 			layers.height = image.height;
 		}
 		if (image.width === layers.width && image.height === layers.height) {
-			layers.list.push(new layers.Item(file, image));
+			layers.list.push(new Item(file, image));
 			$scope.$apply();
 		}
 	};

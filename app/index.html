@@ -17,15 +17,15 @@ data-nv-file-over="">
 			<h2>HTMLSlayer</h2>
 		</div>
 		<div class="row">
-			<div class="col-md-8 col-sm-6" data-ng-show="layers.list.length">
+			<div class="col-md-8 col-sm-6" data-ng-show="list.length">
 				<div >
 					<div class="checkbox">
-						<label><input type="checkbox" data-ng-model="layers.opts.is3d" /> Show layers in 3d</label>
+						<label><input type="checkbox" data-ng-model="opts.is3d" /> Show layers in 3d</label>
 					</div>
 
-					<div class="Slayer-preview center-block" data-ng-class="{'Slayer-preview--3d': layers.opts.is3d, 'Slayer-preview--selected': layers.haveSelected}" style="width: {{ layers.opts.output.useTrimmedCanvas?layers.trimmed.width:layers.width }}px; height: {{ layers.opts.output.useTrimmedCanvas?layers.trimmed.height:layers.height }}px">
+					<div class="Slayer-preview center-block" data-ng-class="{'Slayer-preview--3d': opts.is3d, 'Slayer-preview--selected': haveSelected}" style="width: {{ opts.output.useTrimmedCanvas?trimmed.width:width }}px; height: {{ opts.output.useTrimmedCanvas?trimmed.height:height }}px">
 						<div
-						data-ng-repeat="layer in layers.list"
+						data-ng-repeat="layer in list"
 						data-ng-class="{'Slayer-preview-layer--selected': layer.isSelected}"
 						class="Slayer-preview-layer"
 						>
@@ -40,74 +40,74 @@ data-nv-file-over="">
 						</div>
 					</div>
 
-					<div class="checkbox" data-ng-hide="layers.opts.output.showOptions">
-						<label><input type="checkbox" data-ng-model="layers.opts.output.showOptions" /> Show output options</label>
+					<div class="checkbox" data-ng-hide="opts.output.showOptions">
+						<label><input type="checkbox" data-ng-model="opts.output.showOptions" /> Show output options</label>
 					</div>
-					<div class="bs-callout bs-callout-info" data-ng-show="layers.opts.output.showOptions">
-						<h3><label><input type="checkbox" data-ng-model="layers.opts.output.showOptions" /> Output options</label></h3>
+					<div class="bs-callout bs-callout-info" data-ng-show="opts.output.showOptions">
+						<h3><label><input type="checkbox" data-ng-model="opts.output.showOptions" /> Output options</label></h3>
 
 						<div class="checkbox">
-							<label><input type="checkbox" data-ng-model="layers.opts.output.useTrimmedCanvas" /> Use trimmed canvas</label>
+							<label><input type="checkbox" data-ng-model="opts.output.useTrimmedCanvas" /> Use trimmed canvas</label>
 						</div>
 						<p>Identification:
 							<span class="radio-inline">
 								<label>
-									<input type="radio" data-ng-model="layers.opts.output.attribute" value="id"> ID
+									<input type="radio" data-ng-model="opts.output.attribute" value="id"> ID
 								</label>
 							</span>
 							<span class="radio-inline">
 								<label>
-									<input type="radio" data-ng-model="layers.opts.output.attribute" value="class"> Class
+									<input type="radio" data-ng-model="opts.output.attribute" value="class"> Class
 								</label>
 							</span>
 							<span class="radio-inline">
 								<label>
-									<input type="radio" data-ng-model="layers.opts.output.attribute" value=""> None
+									<input type="radio" data-ng-model="opts.output.attribute" value=""> None
 								</label>
 							</span>
 						</p>
 						<div class="checkbox">
-							<label><input type="checkbox" data-ng-model="layers.opts.output.previewCode" /> Preview code</label>
+							<label><input type="checkbox" data-ng-model="opts.output.previewCode" /> Preview code</label>
 						</div>
 					</div>
 
-					<textarea class="form-control" data-ng-show="layers.opts.output.previewCode" rows="10">{{ layers | layersHTML }}</textarea>
+					<textarea class="form-control" data-ng-show="opts.output.previewCode" rows="10">{{ layers | layersHTML }}</textarea>
 				</div>
 			</div>
-			<div class="col-md-4 col-sm-6" data-ng-class="{'center-block': !layers.list.length}">
+			<div class="col-md-4 col-sm-6" data-ng-class="{'center-block': !list.length}">
 
-				<p data-ng-show="layers.list.length">
+				<p data-ng-show="list.length">
 					<button
 					class="btn btn-success"
 					type="button"
-					data-ng-click="layers.save()"
+					data-ng-click="save()"
 					>Save HTML, CSS and trimmed images</button>
 				</p>
 
-				<div data-ng-show="layers.list.length">
-					<div class="checkbox" data-ng-hide="layers.opts.thumbnail.showOptions">
-						<label><input type="checkbox" data-ng-model="layers.opts.thumbnail.showOptions" /> Show layers options</label>
+				<div data-ng-show="list.length">
+					<div class="checkbox" data-ng-hide="opts.thumbnail.showOptions">
+						<label><input type="checkbox" data-ng-model="opts.thumbnail.showOptions" /> Show layers options</label>
 					</div>
-					<div class="bs-callout bs-callout-info" data-ng-show="layers.opts.thumbnail.showOptions">
-						<h3><label><input type="checkbox" data-ng-model="layers.opts.thumbnail.showOptions" /> Layers options</label></h3>
+					<div class="bs-callout bs-callout-info" data-ng-show="opts.thumbnail.showOptions">
+						<h3><label><input type="checkbox" data-ng-model="opts.thumbnail.showOptions" /> Layers options</label></h3>
 						<div class="radio">
 							<label>
-								<input type="radio" data-ng-model="layers.opts.thumbnail.type" value="2"> Full thumbnail
+								<input type="radio" data-ng-model="opts.thumbnail.type" value="2"> Full thumbnail
 							</label>
 						</div>
 						<div class="radio">
 							<label>
-								<input type="radio" data-ng-model="layers.opts.thumbnail.type" value="1"> Trimmed thumbnail
+								<input type="radio" data-ng-model="opts.thumbnail.type" value="1"> Trimmed thumbnail
 							</label>
 						</div>
 						<div class="radio">
 							<label>
-								<input type="radio" data-ng-model="layers.opts.thumbnail.type" value="0"> No thumbnail
+								<input type="radio" data-ng-model="opts.thumbnail.type" value="0"> No thumbnail
 							</label>
 						</div>
 
-						<p data-ng-show="layers.opts.thumbnail.type">
-							<label>Thumbnail size:</label> <input type="range" min="30" max="100" step="1" data-ng-model="layers.opts.thumbnail.size" />
+						<p data-ng-show="opts.thumbnail.type">
+							<label>Thumbnail size:</label> <input type="range" min="30" max="100" step="1" data-ng-model="opts.thumbnail.size" />
 						</p>
 					</div>
 				</div>
@@ -116,41 +116,41 @@ data-nv-file-over="">
 				<div class="well my-drop-zone" >
 
 					<span data-ng-show="uploader.isHTML5">Drop files here or</span>
-					<label class="btn btn-primary" data-ng-class="{'btn-xs': layers.list.length}" for="input-file" >Browse</label>
+					<label class="btn btn-primary" data-ng-class="{'btn-xs': list.length}" for="input-file" >Browse</label>
 					<input id="input-file" type="file" data-nv-file-select="" data-uploader="uploader" multiple class="hidden" />
 					<button
 					class="btn btn-danger btn-xs"
 					type="button"
-					data-ng-click="layers.clear()"
-					data-ng-show="layers.list.length"
+					data-ng-click="clear()"
+					data-ng-show="list.length"
 					>Clear</button>
 					<button
 					class="btn btn-default btn-xs"
 					type="button"
-					data-ng-click="layers.sortByName()"
-					data-ng-show="layers.list.length"
+					data-ng-click="sortByName()"
+					data-ng-show="list.length"
 					>Sort by name</button>
 
-					<br data-ng-show="layers.list.length">
-					<br data-ng-show="layers.list.length">
+					<br data-ng-show="list.length">
+					<br data-ng-show="list.length">
 					<div data-ui-tree data-max-depth="1">
 						<div data-ui-tree-nodes
-						data-ng-model="layers.list"
-						data-ng-show="layers.list.length">
+						data-ng-model="list"
+						data-ng-show="list.length">
 							<div data-ui-tree-node
-							data-ng-repeat="layer in layers.list"
-							data-ng-mouseenter="layer.isSelected = true;layers.haveSelected = true"
-							data-ng-mouseleave="layer.isSelected = false;layers.haveSelected = false"
+							data-ng-repeat="layer in list"
+							data-ng-mouseenter="layer.isSelected = true;haveSelected = true"
+							data-ng-mouseleave="layer.isSelected = false;haveSelected = false"
 							class="Slayer-layer"
 							>
 								<div
-								data-ng-show="layers.opts.thumbnail.type"
+								data-ng-show="opts.thumbnail.type"
 								class="Slayer-layer-thumbnail"
-								style="max-width: {{layers.opts.thumbnail.size}}px; max-height: {{layers.opts.thumbnail.size}}px"
+								style="max-width: {{opts.thumbnail.size}}px; max-height: {{opts.thumbnail.size}}px"
 								>
 									<img
 									src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-									data-ng-src="{{ layers.opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
+									data-ng-src="{{ opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
 									alt=""
 									>
 								</div>
