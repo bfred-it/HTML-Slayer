@@ -1,94 +1,20 @@
-// @import '../bower_components/bootstrap//dist/css/bootstrap.css';
 @import 'bootstrap-cerulean.min.css';
 @import 'bootstrap.callouts.css';
 @import 'bootstrap.normalise';
-// @import 'forms';
-// @import 'base';
-// @import 'vertical-position';
-// @import 'suit.arrange';
 @import 'functions';
 @import '_timing-functions.scss';
 @import 'angular-ui-tree';
 
-$color-white: #f4ecd5;
-
-// @font-face {
-// 	font-family: 'Liberator';
-// 	src: url('liberator.otf') format('opentype');
-// }
 html {
 	overflow-y: scroll;
 }
-%content-block,
-p, h1, h2, h3 {
-	margin-top: 0;
-}
-small {
-	font-size: 0.5em;
-}
-
-/**
- * MODIFIERS
- */
-.vCentered {
-	img, .SqBtn {
-		vertical-align: middle;
-	}
-}
-
-br.mq-large-screen {
-	@media (max-width: 1000px) {
-		display: none;
-	}
-}
-br.mq-medium-screen {
-	@media (max-width: 500px) {
-		display: none;
-	}
-}
-br.mq-medium-screen-only {
-	display: none;
-	@media (max-width: 500px) {
-		display: block;
-	}
-}
-
-.blend-in-link {
-	text-decoration: none;
-	color: inherit;
-	&:hover,
-	&:focus {
-		text-decoration: underline;
-	}
-}
-.bare-link {
-	text-decoration: underline;
-	// border-bottom: 1px solid;
-	&:active {
-		opacity: 0.6;
-	}
-}
-
-
-.button-reset {
-	@extend %button-reset;
-}
-.CenterContentXY {
-	display: flex;
-	align-items: center; /*X*/
-	justify-content: center; /*Y*/
-	min-height: 100%;
-	flex-direction: column;
-	& > * {
-		max-width: 100%; //IE needs this…
-	}
-}
-
+html, body { height: 100%; }
 
 .my-drop-zone { border: dotted 3px lightgray; }
 .nv-file-over .my-drop-zone { border: dotted 3px red; } /* Default class applied to drop zones on over */
 
-html, body { height: 100%; }
+
+
 
 .Slayer-layer {
 	margin: 0.1em 0;
