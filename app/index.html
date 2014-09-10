@@ -149,17 +149,21 @@ data-nv-file-over="">
 							data-ng-mouseleave="layer.isSelected = false;haveSelected = false"
 							class="Slayer-layer"
 							>
-								<div
+								<svg
 								data-ng-show="opts.thumbnail.type"
 								class="Slayer-layer-thumbnail"
-								style="max-width: {{opts.thumbnail.size}}px; max-height: {{opts.thumbnail.size}}px"
+								width="{{opts.thumbnail.size}}"
+								height="{{opts.thumbnail.size}}"
+								viewBox="0 0 {{ opts.thumbnail.type == 1? layer.coordinates.width : width }} {{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
 								>
-									<img
-									src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-									data-ng-src="{{ opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
+									<image
+									xlink:href="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+									data-ng-href="{{ opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
+									width="{{ opts.thumbnail.type == 1? layer.coordinates.width : width }}"
+									height="{{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
 									alt=""
 									>
-								</div>
+								</svg>
 								<button type="button" class="btn btn-danger btn-xs" data-ng-click="layer.remove()">×</button>
 								<!-- <input type="checkbox" data-ng-model="layer.hasWrapper" /> -->
 								{{ layer.name }}
