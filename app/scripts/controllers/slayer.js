@@ -90,12 +90,10 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 	};
 	var sortAscending = false;
 	layers.sortByName = function () {
-		layers.list.sort(function(item1, item2) {
-			if (sortAscending) {
-				return item1.file.name < item2.file.name;
-			}
-			return item1.file.name > item2.file.name;
-		});
+		layers.list = _.sortBy(layers.list, 'name');
+		if (!sortAscending) {
+			layers.list.reverse();
+		}
 		sortAscending = !sortAscending;
 		// $scope.$apply();
 	};
