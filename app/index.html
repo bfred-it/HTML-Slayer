@@ -150,17 +150,16 @@ data-nv-file-over="">
 								<svg
 								data-ng-show="opts.thumbnail.type"
 								class="Slayer-layer-thumbnail"
-								width="{{opts.thumbnail.size}}"
-								height="{{opts.thumbnail.size}}"
-								viewBox="0 0 {{ opts.thumbnail.type == 1? layer.coordinates.width : width }} {{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
+								ng-attr-width="{{opts.thumbnail.size}}"
+								ng-attr-height="{{opts.thumbnail.size}}"
+								vbox="0 0 {{ opts.thumbnail.type == 1? layer.coordinates.width : width }} {{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
 								>
 									<image
 									xlink:href="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
 									data-ng-href="{{ opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
-									width="{{ opts.thumbnail.type == 1? layer.coordinates.width : width }}"
-									height="{{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
-									alt=""
-									>
+									data-ng-attr-width="{{ opts.thumbnail.type == 1? layer.coordinates.width : width }}"
+									data-ng-attr-height="{{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
+									/>
 								</svg>
 								<button type="button" class="btn btn-danger btn-xs" data-ng-click="layer.remove()">×</button>
 								<!-- <input type="checkbox" data-ng-model="layer.hasWrapper" /> -->
