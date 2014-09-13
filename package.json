@@ -54,6 +54,7 @@
     "lodash": "global:lodash"
   },
   "dependencies": {
-    "stringify": "^2.2.0"
+    "stringify": "^2.2.0",
+    "javascript-natural-sort": "^0.7.1"
   }
 }
