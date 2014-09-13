@@ -72,7 +72,7 @@ function buildAndWatchScripts (lr) {
 	bundler.add('./app/scripts/bfred.js');
 	bundler.transform('debowerify');
 	bundler.transform('deglobalify');
-	bundler.transform(stringify(['.html']));
+	bundler.transform(stringify(['.html','.jade']));
 	if (lr) {
 		bundler.on('update', function () { buildScript(bundler).pipe(lr()); });
 		return buildScript(bundler);
