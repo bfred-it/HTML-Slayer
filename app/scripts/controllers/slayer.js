@@ -55,10 +55,11 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 			layer.destroy();
 		};
 		layer.destroy = function () {
-			console.log('destroying', layer);
+			// console.log('destroying', layer);
 			layer.file = null;
 			layer.img = null;
 		};
+		layer.list = [];
 	};
 	layers.clear = function () {
 		_.invoke(layers.list, 'destroy');
