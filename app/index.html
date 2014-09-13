@@ -137,34 +137,48 @@ data-nv-file-over="">
 
 					<br data-ng-show="list.length">
 					<br data-ng-show="list.length">
-					<div data-ui-tree data-max-depth="1">
+					<script type="text/ng-template" id="layer-template">
+						<div
+						data-ng-mouseenter="layer.isSelected = true;haveSelected = true"
+						data-ng-mouseleave="layer.isSelected = false;haveSelected = false"
+						class="Slayer-layer"
+						>
+							<svg
+							data-ng-show="opts.thumbnail.type"
+							class="Slayer-layer-thumbnail"
+							ng-attr-width="{{opts.thumbnail.size}}"
+							ng-attr-height="{{opts.thumbnail.size}}"
+							vbox="0 0 {{ opts.thumbnail.type == 1? layer.coordinates.width : width }} {{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
+							>
+								<image
+								xlink:href="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+								data-ng-href="{{ opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
+								data-ng-attr-width="{{ opts.thumbnail.type == 1? layer.coordinates.width : width }}"
+								data-ng-attr-height="{{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
+								/>
+							</svg>
+							<button type="button" class="btn btn-danger btn-xs" data-ng-click="layer.remove()">×</button>
+							<!-- <input type="checkbox" data-ng-model="layer.hasWrapper" /> -->
+							{{ layer.name }}
+
+							<div ui-tree-nodes data-ng-model="layer.list">
+								<div
+								data-ng-repeat="layer in layer.list"
+								data-ui-tree-node
+								data-ng-include="'layer-template'"
+								></div>
+							</div>
+						</div>
+					</script>
+					<div data-ui-tree>
 						<div data-ui-tree-nodes
 						data-ng-model="list"
 						data-ng-show="list.length">
-							<div data-ui-tree-node
+							<div
 							data-ng-repeat="layer in list"
-							data-ng-mouseenter="layer.isSelected = true;haveSelected = true"
-							data-ng-mouseleave="layer.isSelected = false;haveSelected = false"
-							class="Slayer-layer"
-							>
-								<svg
-								data-ng-show="opts.thumbnail.type"
-								class="Slayer-layer-thumbnail"
-								ng-attr-width="{{opts.thumbnail.size}}"
-								ng-attr-height="{{opts.thumbnail.size}}"
-								vbox="0 0 {{ opts.thumbnail.type == 1? layer.coordinates.width : width }} {{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
-								>
-									<image
-									xlink:href="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-									data-ng-href="{{ opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
-									data-ng-attr-width="{{ opts.thumbnail.type == 1? layer.coordinates.width : width }}"
-									data-ng-attr-height="{{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
-									/>
-								</svg>
-								<button type="button" class="btn btn-danger btn-xs" data-ng-click="layer.remove()">×</button>
-								<!-- <input type="checkbox" data-ng-model="layer.hasWrapper" /> -->
-								{{ layer.name }}
-							</div>
+							data-ui-tree-node
+							data-ng-include="'layer-template'"
+							></div>
 						</div>
 					</div>
 				</div>
