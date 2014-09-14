@@ -14,7 +14,6 @@ html, body { height: 100%; }
 
 
 
-
 .Slayer-layer {
 	padding: 2px 0;
 }
@@ -85,4 +84,10 @@ html, body { height: 100%; }
 .Slayer-preview-image--selected {
 	background-color: rgba(yellowgreen, 0.6);
 	border: solid 1px rgba(yellowgreen, 0.8);
+}
+
+
+.Slayer-output  {
+	white-space: pre;
+	word-wrap: normal;
 }

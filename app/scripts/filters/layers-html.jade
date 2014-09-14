@@ -4,7 +4,7 @@ mixin showChildren(list, level)
 		if layer.list.length
 			div(id=__.id?__.id + '-g' + level : null, class=__.class?__.class + '-g' + level: null)
 				+layerTag(opts.output.imgTag, layer, level+1)
-				mixin showChildren(layer.list, level)
+				+showChildren(layer.list, level)
 		else
 			+layerTag(opts.output.imgTag, layer, level)
 
@@ -22,4 +22,4 @@ mixin imgTag(layer, level)
 	img(id=layer.__.id, class=layer.__.class, style=layer.__.style.join('; '), alt="",  src=layer.__.filename)
 
 div(id=__.id, class=__.class, style=__.style.join(' '))
-	mixin showChildren(list, 0)
+	+showChildren(list, 0)

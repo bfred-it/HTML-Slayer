@@ -21,7 +21,10 @@ data-nv-file-over="">
 						<label><input type="checkbox" data-ng-model="opts.is3d" /> Show layers in 3d</label>
 					</div>
 
-					<div class="Slayer-preview center-block" data-ng-class="{'Slayer-preview--3d': opts.is3d, 'Slayer-preview--selected': haveSelected}" style="width: {{ opts.output.useTrimmedCanvas?trimmed.width:width }}px; height: {{ opts.output.useTrimmedCanvas?trimmed.height:height }}px">
+					<div
+					class="Slayer-preview center-block"
+					data-ng-class="{'Slayer-preview--3d': opts.is3d, 'Slayer-preview--selected': haveSelected}"
+					style="width: {{ opts.output.useTrimmedCanvas?trimmed.width:width }}px; height: {{ opts.output.useTrimmedCanvas?trimmed.height:height }}px">
 						<div
 						data-ng-repeat="layer in getFlattenedList()"
 						data-ng-class="{'Slayer-preview-layer--selected': layer.isSelected}"
@@ -78,7 +81,7 @@ data-nv-file-over="">
 						</div>
 					</div>
 
-					<textarea class="form-control" data-ng-show="opts.output.previewCode" rows="10">{{ layers | layersHTML }}</textarea>
+					<textarea class="Slayer-output form-control" data-ng-show="opts.output.previewCode" rows="10">{{ layers | layersHTML }}</textarea>
 				</div>
 			</div>
 			<div class="col-md-4 col-sm-6" data-ng-class="{'center-block': !list.length}">
@@ -177,12 +180,14 @@ data-nv-file-over="">
 					data-ui-tree="options"
 					data-ng-controller="LayersController"
 					>
-						<div data-ui-tree-nodes
+						<div
+						data-ui-tree-nodes
 						data-ng-model="list"
-						data-ng-show="list.length">
+						data-ng-show="list.length"
+						>
 							<div
-							data-ng-repeat="layer in list"
 							data-ui-tree-node
+							data-ng-repeat="layer in list"
 							data-ng-include="'layer-template'"
 							></div>
 						</div>
@@ -203,7 +208,7 @@ data-nv-file-over="">
 		<li>OPTION: not-inline CSS</li>
 		<li>OPTION: create shared transform origin (possibly out of scope)</li>
 		<li>natural sorting (a2 < a11)</li>
-		<li>OPTION: images as background</li>
+		<li>OK: images as background</li>
 		<li>OPTION: set width/height attributes on &lt;img&gt;</li>
 		<li>OPTION: save intended rotation using a wrapper, rather than rotating the bitmap (advanced, requires layer editor)</li>
 		<li>Drag layers to change their position</li>
