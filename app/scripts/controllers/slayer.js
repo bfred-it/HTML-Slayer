@@ -1,6 +1,5 @@
 'use strict';
 require('angular-file-upload');
-require('angular-ui-tree');
 require('ngstorage');
 var JSZip = require('jszip');
 var saveAs = require('../save-file');
@@ -101,6 +100,17 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 	layers.width = null;
 	layers.height = null;
 	layers.trimmed = {};
+	layers.getFlattenedList = function () {
+		var flattened = [];
+		(function walkLevel(list) {
+			for (var i = 0, l = list.length; i < l; i++) {
+				flattened.push(list[i]);
+				walkLevel(list[i].list);
+			}
+		} (layers.list));
+		// console.log(_.pluck(fl attened, 'name'));
+		return flattened;
+	};
 	layers.updateTrimmedCoordinates = function () {
 		var a = {
 			x: layers.width,
@@ -111,8 +121,9 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 			y: 0
 		};
 		var layerCoordinates;
-		for (var i = 0; i < layers.list.length; i++) {
-			layerCoordinates = layers.list[i].coordinates;
+		var list = layers.getFlattenedList();
+		for (var i = 0; i < list.length; i++) {
+			layerCoordinates = list[i].coordinates;
 			if (layerCoordinates.a.x < a.x) {
 				a.x = layerCoordinates.a.x;
 			}
@@ -139,8 +150,9 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 		var minX = layers.width;
 		var maxX = 0;
 		var layerCoordinates;
-		for (var i = 0; i < layers.list.length; i++) {
-			layerCoordinates = layers.list[i].coordinates;
+		var list = layers.getFlattenedList();
+		for (var i = 0; i < list.length; i++) {
+			layerCoordinates = list[i].coordinates;
 			if (layerCoordinates.a.x < minX) {
 				minX = layerCoordinates.a.x;
 			}
