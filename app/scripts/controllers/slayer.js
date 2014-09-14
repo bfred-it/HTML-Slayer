@@ -50,8 +50,31 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 
 
 		layer.remove = function () {
-			layers.list.splice(layers.list.indexOf(layer), 1);
-			layer.destroy();
+			var list = layer.findLayerGroup();
+
+			if (list) {
+				for (var i = 0, l = layer.list.length; i < l; i++) {
+					layer.list[i].remove();
+				}
+				list.splice(list.indexOf(layer), 1);
+				layer.destroy();
+				console.log('Layer', layer.name, 'removed');
+			}
+		};
+		layer.findLayerGroup = function () {
+			return (function walkLevel(list) {
+				var parent;
+				for (var i = 0, l = list.length; i < l; i++) {
+					if (list.indexOf(layer) >= 0) {
+						return list;
+					}
+					parent = walkLevel(list[i].list);
+					if (parent) {
+						return parent;
+					}
+				}
+				return false;
+			} (layers.list));
 		};
 		layer.destroy = function () {
 			// console.log('destroying', layer);
@@ -61,8 +84,9 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 		layer.list = [];
 	};
 	layers.clear = function () {
-		_.invoke(layers.list, 'destroy');
-		layers.list.length = 0;
+		while(layers.list.length) {
+			layers.list[0].remove();
+		}
 	};
 	layers.save = function () {
 		var zip = new JSZip();
