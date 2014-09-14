@@ -23,7 +23,7 @@ data-nv-file-over="">
 
 					<div class="Slayer-preview center-block" data-ng-class="{'Slayer-preview--3d': opts.is3d, 'Slayer-preview--selected': haveSelected}" style="width: {{ opts.output.useTrimmedCanvas?trimmed.width:width }}px; height: {{ opts.output.useTrimmedCanvas?trimmed.height:height }}px">
 						<div
-						data-ng-repeat="layer in list"
+						data-ng-repeat="layer in getFlattenedList()"
 						data-ng-class="{'Slayer-preview-layer--selected': layer.isSelected}"
 						class="Slayer-preview-layer"
 						>
