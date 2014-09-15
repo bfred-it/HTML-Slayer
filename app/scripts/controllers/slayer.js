@@ -100,7 +100,8 @@ module.exports = ['$scope', '$filter', '$localStorage', 'FileUploader', function
 		}
 
 		//save layers
-		_.forEach(layers.list, function (layer) {
+		var list = layers.getFlattenedList();
+		_.forEach(list, function (layer) {
 			var base64 = layer.trimmedImg.src.split('base64,', 2).pop();
 			folder.file(layer.file.name, base64, {
 				base64: true
