@@ -50,9 +50,6 @@ data-nv-file-over="">
 						<div class="checkbox">
 							<label><input type="checkbox" data-ng-model="opts.output.useTrimmedCanvas" /> Use trimmed canvas</label>
 						</div>
-						<div class="checkbox">
-							<label><input type="checkbox" data-ng-model="opts.output.imgTag" /> Use <code>img</code> tag for layers</label>
-						</div>
 						<p>Identification: &nbsp;
 							<span class="radio-inline">
 								<label>
@@ -75,6 +72,13 @@ data-nv-file-over="">
 							Namespace: &nbsp;
 							<input type="text" class="form-control input-sm" placeholder="e.g. anim-" data-ng-model="opts.output.namespace">
 						</label>
+
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="opts.output.imgTag" /> Use <code>img</code> tag for layers</label>
+						</div>
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="opts.output.createGroups" /> Include parent in nested layers group <small>(usually unwanted)</small></label>
+						</div>
 
 						<div class="checkbox">
 							<label><input type="checkbox" data-ng-model="opts.output.previewCode" /> Preview code</label>

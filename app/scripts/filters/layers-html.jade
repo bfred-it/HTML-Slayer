@@ -2,24 +2,29 @@ mixin showChildren(list, level)
 	- level++
 	each layer in list
 		if layer.list.length
-			div(id=__.id?__.id + '-g' + level : null, class=__.class?__.class + '-g' + level: null)
-				+layerTag(opts.output.imgTag, layer, level+1)
-				+showChildren(layer.list, level)
+			if opts.output.createGroups
+				div(id=__.id?__.id + '-g' + level : null, class=__.class?__.class + '-g' + level: null)
+					+layerTag(opts.output.imgTag, layer, level+1)
+					+showChildren(layer.list, level)
+			else
+				div(id=layer.__.group.id, class=layer.__.group.class, style=layer.__.group.style)
+					+layerTag(opts.output.imgTag, layer, level+1)
+					+showChildren(layer.list, level)
 		else
 			+layerTag(opts.output.imgTag, layer, level)
 
 mixin layerTag(isImg, layer, level)
 	if isImg
 		+imgTag(layer, level)
-	else
-		div(id=layer.__.id, class=layer.__.class, style=layer.__.style.join('; '))
+	else if !layer.__.group
+		div(id=layer.__.id, class=layer.__.class, style=layer.__.style)
 
 mixin imgTag(layer, level)
 	="\n"
 	while level > 0
 		="\t"
 		- level--
-	img(id=layer.__.id, class=layer.__.class, style=layer.__.style.join('; '), alt="",  src=layer.__.filename)
+	img(id=layer.__.id, class=layer.__.class, style=layer.__.style, alt="",  src=layer.__.filename)
 
-div(id=__.id, class=__.class, style=__.style.join(' '))
+div(id=__.id, class=__.class, style=__.style)
 	+showChildren(list, 0)
