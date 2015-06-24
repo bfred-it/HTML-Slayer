@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="slayer">
+<head>
+	<meta charset="UTF-8" />
+	<title>HTML Slayer</title>
+	<link rel="stylesheet" href="assets/bfred.css" type="text/css" />
+	<script type="text/javascript" src="assets/bfred.js"></script>
+</head>
+
+<body
+data-ng-controller="SlayerController"
+data-nv-file-drop=""
+data-uploader="uploader"
+data-nv-file-over="">
+	<div class="container-fluid">
+		<h2 data-ng-class="{'text-center': !list.length}">HTMLSlayer</h2>
+		<div class="row">
+			<div class="col-md-8 col-sm-6" data-ng-show="list.length">
+				<div >
+					<div class="checkbox">
+						<label><input type="checkbox" data-ng-model="opts.is3d" /> Show layers in 3d</label>
+					</div>
+
+					<div
+					class="Slayer-preview center-block"
+					data-ng-class="{'Slayer-preview--3d': opts.is3d, 'Slayer-preview--selected': haveSelected}"
+					style="width: {{ opts.output.useTrimmedCanvas?trimmed.width:width }}px; height: {{ opts.output.useTrimmedCanvas?trimmed.height:height }}px">
+						<div
+						data-ng-repeat="layer in getFlattenedList()"
+						data-ng-class="{'Slayer-preview-layer--selected': layer.isSelected}"
+						class="Slayer-preview-layer"
+						>
+							<img
+							src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+							data-ng-src="{{layer.trimmedImg.src}}"
+							data-ng-class="{'Slayer-preview-image--selected': layer.isSelected}"
+							class="Slayer-preview-image"
+							style="top: {{ layer.coordinates.get('y') }}px; left: {{ layer.coordinates.get('x') }}px"
+							alt=""
+							>
+						</div>
+					</div>
+
+					<div class="checkbox" data-ng-hide="opts.output.showOptions">
+						<label><input type="checkbox" data-ng-model="opts.output.showOptions" /> Show output options</label>
+					</div>
+					<div class="bs-callout bs-callout-info" data-ng-show="opts.output.showOptions">
+						<h3><label><input type="checkbox" data-ng-model="opts.output.showOptions" /> Output options</label></h3>
+
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="opts.output.useTrimmedCanvas" /> Use trimmed canvas</label>
+						</div>
+						<p>Identification: &nbsp;
+							<span class="radio-inline">
+								<label>
+									<input type="radio" data-ng-model="opts.output.attribute" value="id"> ID
+								</label>
+							</span>
+							<span class="radio-inline">
+								<label>
+									<input type="radio" data-ng-model="opts.output.attribute" value="class"> Class
+								</label>
+							</span>
+							<span class="radio-inline">
+								<label>
+									<input type="radio" data-ng-model="opts.output.attribute" value=""> None
+								</label>
+							</span>
+						</p>
+
+						<label class="form-inline control-label">
+							Namespace: &nbsp;
+							<input type="text" class="form-control input-sm" placeholder="e.g. anim-" data-ng-model="opts.output.namespace">
+						</label>
+
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="opts.output.imgTag" /> Use <code>img</code> tag for layers</label>
+						</div>
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="opts.output.createGroups" /> Include parent in nested layers group <small>(usually unwanted)</small></label>
+						</div>
+
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="opts.output.previewCode" /> Preview code</label>
+						</div>
+					</div>
+
+					<textarea class="Slayer-output form-control" data-ng-show="opts.output.previewCode" rows="10">{{ layers | layersHTML }}</textarea>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6" data-ng-class="{'center-block': !list.length}">
+
+				<p data-ng-show="list.length">
+					<button
+					class="btn btn-success"
+					type="button"
+					data-ng-click="save()"
+					>Save HTML, CSS and trimmed images</button>
+				</p>
+
+				<div data-ng-show="list.length">
+					<div class="checkbox" data-ng-hide="opts.thumbnail.showOptions">
+						<label><input type="checkbox" data-ng-model="opts.thumbnail.showOptions" /> Show layers options</label>
+					</div>
+					<div class="bs-callout bs-callout-info" data-ng-show="opts.thumbnail.showOptions">
+						<h3><label><input type="checkbox" data-ng-model="opts.thumbnail.showOptions" /> Layers options</label></h3>
+						<div class="radio">
+							<label>
+								<input type="radio" data-ng-model="opts.thumbnail.type" value="2"> Full thumbnail
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" data-ng-model="opts.thumbnail.type" value="1"> Trimmed thumbnail
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" data-ng-model="opts.thumbnail.type" value="0"> No thumbnail
+							</label>
+						</div>
+
+						<p data-ng-show="opts.thumbnail.type">
+							<label>Thumbnail size:</label> <input type="range" min="30" max="100" step="1" data-ng-model="opts.thumbnail.size" />
+						</p>
+					</div>
+				</div>
+
+
+				<div class="well my-drop-zone" data-ng-class="{'text-center': !list.length}">
+
+					<span data-ng-show="uploader.isHTML5">Drop files here or</span>
+					<label class="btn btn-primary" data-ng-class="{'btn-xs': list.length}" for="input-file" >Browse</label>
+					<input id="input-file" type="file" data-nv-file-select="" data-uploader="uploader" multiple class="hidden" />
+					<button
+					class="btn btn-danger btn-xs"
+					type="button"
+					data-ng-click="clear()"
+					data-ng-show="list.length"
+					>Clear</button>
+					<button
+					class="btn btn-default btn-xs"
+					type="button"
+					data-ng-click="sortByName()"
+					data-ng-show="list.length"
+					>Sort by name</button>
+
+					<br data-ng-show="list.length">
+					<br data-ng-show="list.length">
+					<script type="text/ng-template" id="layer-template">
+						<div
+						data-ng-mouseenter="layer.isSelected = true;haveSelected = true"
+						data-ng-mouseleave="layer.isSelected = false;haveSelected = false"
+						class="Slayer-layer"
+						>
+							<svg
+							data-ng-show="opts.thumbnail.type"
+							class="Slayer-layer-thumbnail"
+							ng-attr-width="{{opts.thumbnail.size}}"
+							ng-attr-height="{{opts.thumbnail.size}}"
+							vbox="0 0 {{ opts.thumbnail.type == 1? layer.coordinates.width : width }} {{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
+							>
+								<image
+								xlink:href="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+								data-ng-href="{{ opts.thumbnail.type == 1? layer.trimmedImg.src : layer.img.src }}"
+								data-ng-attr-width="{{ opts.thumbnail.type == 1? layer.coordinates.width : width }}"
+								data-ng-attr-height="{{ opts.thumbnail.type == 1? layer.coordinates.height : height }}"
+								/>
+							</svg>
+							<button type="button" class="btn btn-danger btn-xs" data-ng-click="layer.remove()">×</button>
+							<!-- <input type="checkbox" data-ng-model="layer.hasWrapper" /> -->
+							{{ layer.name }}
+
+							<div ui-tree-nodes data-ng-model="layer.list">
+								<div
+								data-ng-repeat="layer in layer.list"
+								data-ui-tree-node
+								data-ng-include="'layer-template'"
+								></div>
+							</div>
+						</div>
+					</script>
+					<div
+					data-ui-tree="options"
+					data-ng-controller="LayersController"
+					>
+						<div
+						data-ui-tree-nodes
+						data-ng-model="list"
+						data-ng-show="list.length"
+						>
+							<div
+							data-ui-tree-node
+							data-ng-repeat="layer in list"
+							data-ng-include="'layer-template'"
+							></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- <ul>
+		<li>OK Drop files in here</li>
+		<li>OK Verify sizes</li>
+		<li>OK Trim images and save coordinates</li>
+		<li>OK Create list with thumbnails</li>
+		<li>OK Overlap them on main canvas</li>
+		<li>OK Make layers list sortable (z-ordering)</li>
+		<li>OK Create html + css with data</li>
+		<li>OK Save HTML, CSS, images exportable</li>
+		<li>OPTION: not-inline CSS</li>
+		<li>OPTION: create shared transform origin (possibly out of scope)</li>
+		<li>natural sorting (a2 < a11)</li>
+		<li>OK: images as background</li>
+		<li>OPTION: set width/height attributes on &lt;img&gt;</li>
+		<li>OPTION: save intended rotation using a wrapper, rather than rotating the bitmap (advanced, requires layer editor)</li>
+		<li>Drag layers to change their position</li>
+	</ul> -->
+</body>
+</html>
